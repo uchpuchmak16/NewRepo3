@@ -95,9 +95,59 @@
 // 
 // 
 // 
+
+
+
+
+
   //МЕТОД ЗОЛОТОГО СЕЧЕНИЯ
-   
+// Функция для вычисления значения функции F(E) = M + e*sin(E) - E
+//double calculateFunction(double M, double e, double E) {
+    //return M + e * sin(E) - E;
+}
+
+// Функция для вычисления эксцентрической аномалии методом золотого сечения
+//double calculateEccentricAnomaly(double M, double e, double accuracy) {
+    //const double goldenRatio = (1 + sqrt(5)) / 2; // Золотое сечение
+
+    //double a = 0;
+    //double b = 2 * M_PI; // Пределы для эксцентрической аномалии
+    //double c = b - (b - a) / goldenRatio;
+   // double d = a + (b - a) / goldenRatio;
+
+    //while (abs(b - a) > 2 * accuracy) {
+        //if (calculateFunction(M, e, c) * calculateFunction(M, e, d) < 0) {
+           // b = d;
+       // }
+        //else {
+            //a = c;
+       // }
+
+       // c = b - (b - a) / goldenRatio;
+       // d = a + (b - a) / goldenRatio;
+    //}
+
+    // Найденная эксцентрическая аномалия
+    //double E = (b + a) / 2;
+    //return E;
+//}
+
+//int main() {
+    
+    //double accuracy = 1e-10; // Точность вычислений
+
+    //for (double time = 0; time <= period; time += 1) {
+        //double M = 2 * M_PI * time / 28080; // Средняя аномалия
+        //double E = calculateEccentricAnomaly(M, eccentricity, accuracy);
+
+        //std::cout << "Time: " << time << ", Eccentric Anomaly: " << E << std::endl;
+    //}
+
+    //return 0;
+//}
  
+
+
 
   // МЕТОД НЬЮТОНА
 
