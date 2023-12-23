@@ -1,0 +1,144 @@
+import math
+import numpy as np
+import matplotlib.pyplot as plt
+
+#period_1 = 51160
+#time_points_1 = np.arange(0, period_1, 20)
+#print(time_points_1)
+
+period = 28080
+time_points = np.arange(0, period, 360)
+print(time_points)
+
+
+
+eccentricity = 0.5220019945150835
+PI = 3.14159265358979323846
+period = 28080
+apoapsis_radius_vector = 12389.5
+periapsis_radius_vector = 3654.5
+gravitational_parametr = 42828
+gravitational_constant = 6.67430*(10**-11)
+precision = 1e-10
+
+major_axis = (apoapsis_radius_vector + periapsis_radius_vector) / 2
+focal_parameter = major_axis * (1 - eccentricity * eccentricity)
+
+mean_anomaly = []
+for i in time_points:
+    mean_anomaly.append((2 * PI / period) * i)
+
+#print(mean_anomaly)
+
+#plt.figure(figsize=(5,5))
+#plt.plot(time_points,mean_anomaly)
+#plt.show()
+eccentricic_anomaly = []
+
+def calculate_eccentric_anomaly(eccentricity, mean_anomaly, precision):
+    E0 = mean_anomaly
+    diff = 0.001
+    max_iterations = 10000
+    iteration = 0
+    while diff > precision and iteration < max_iterations:
+        E1 = mean_anomaly + eccentricity * math.sin(E0)
+        diff = abs(E1 - E0)
+        E0 = E1
+        iteration += 1
+    return E0
+
+for i in mean_anomaly:
+    eccentricic_anomaly.append(calculate_eccentric_anomaly(eccentricity,i,precision))
+
+#print(eccentricic_anomaly)
+
+##plt.plot(time_points,eccentricic_anomaly)
+#plt.show()
+
+
+tr_anomaly = []
+
+def calculate_true_anomaly(eccentricity, ect):
+    true_anomaly = math.atan(math.sqrt((1 + eccentricity) / (1 - eccentricity)) * math.tan(ect / 2))
+    return true_anomaly * 2
+
+
+for i in eccentricic_anomaly:
+    tr_anomaly.append(calculate_true_anomaly(eccentricity,i))
+
+#print(tr_anomaly)
+
+#plt.figure(figsize=(5,5))
+#plt.plot(time_points,tr_anomaly)
+#plt.show()
+
+rad_velocity = []
+
+def calculate_rad_velocity(eccentricity, tr_anomaly):
+  radial_velocity =  (math.sqrt(gravitational_parametr / focal_parameter) * eccentricity * math.sin(tr_anomaly))
+  return radial_velocity
+
+for i in tr_anomaly:
+  rad_velocity.append(calculate_rad_velocity(eccentricity, i ))
+
+print(rad_velocity)
+plt.figure(figsize=(5,5))
+plt.plot(time_points,rad_velocity)
+plt.show()
+
+tran_velocity = []
+
+def calculate_tran_velocity(eccentricity, tr_anomaly):
+  transversal_velocity =  math.sqrt(gravitational_parametr / focal_parameter) * (1 + eccentricity * math.cos(tr_anomaly))
+  return transversal_velocity
+
+for i in tr_anomaly:
+  tran_velocity.append(calculate_tran_velocity(eccentricity, i ))
+
+print(tran_velocity)
+plt.figure(figsize=(5,5))
+plt.plot(time_points,tran_velocity)
+plt.show()
+
+velocity = []
+
+def calculate_velocity(eccentricity, tr_anomaly):
+  t_velocity = math.sqrt(gravitational_parametr / focal_parameter)*math.sqrt(1+eccentricity**2 + 2*eccentricity*math.cos(tr_anomaly))
+  return t_velocity
+
+for i in tr_anomaly:
+   velocity.append(calculate_velocity(eccentricity, i ))
+
+#result=list(set(time_points) - set(velocity))
+#print(result)
+
+print(velocity)
+
+#if len(velocity) > len(time_points):
+    #arr1 = velocity[:len(time_points)]
+#elif len(time_points) > len(velocity):
+    #arr2 = time_points[:len(velocity)]
+
+#if len(velocity) > len(time_points):
+    #time_points.extend([0] * (len(velocity) - len(time_points)))
+#elif len(time_points) > len(velocity):
+    #velocity.extend([0] * (len(time_points) - len(velocity)))
+
+
+plt.figure(figsize=(5,5))
+plt.plot(time_points,velocity)
+plt.show()
+
+radius = []
+
+def calculate_radius(eccentricity, tr_anomaly):
+  radius = focal_parameter/(1 + eccentricity*math.cos(tr_anomaly))
+  return radius
+
+for i in tr_anomaly:
+ radius.append(calculate_radius(eccentricity, i ))
+
+print(radius)
+plt.figure(figsize=(5,5))
+plt.plot(time_points,radius)
+plt.show()
